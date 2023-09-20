@@ -2,38 +2,34 @@
 # - Jhon Sebastian Pai
 #- Jhon Brayan Muñoz
 #- Jhonatan Vasquez
+#- Kedin Benavides
 
 import unittest
+import re
+from datetime import datetime
 import tarjeta2 as sh
 
 class string_handlerTest(unittest.TestCase):
-    def setUp(self):
-        """
-            Set up our test: The method is automatically invoked
-            before each test
-        """
-        self.calc=sh.string_handler()
-    def test_add_str(self):
-        self.assertEqual(self.calc.add_str("ABC","DE","F"),"ABCDEF")
-        self.assertEqual(self.calc.add_str("I am"," who"," I am"),"I am who I am")
-    def test_substract_str(self):
-        try:
-            self.assertEqual(self.calc.subtract_str("xyzw","yz"),"xw")
-        except:
-            print("Error-1:",self.calc.subtract_str("xyzw","yz"),"xw")
-        try:
-            self.assertEqual(self.calc.subtract_str("ABCD","BC"),"AD")
-        except:
-            print("Error-1:",self.calc.subtract_str("ABCD","BC"),"AD")
+    def test_validar_tarjeta(self):
+        self.assertTrue(sh.validar_tarjeta("1234567891234567"))
+        self.assertFalse(sh.validar_tarjeta("12345678"))
+        self.assertFalse(sh.validar_tarjeta("124567"))
+        self.assertTrue(sh.validar_tarjeta("1234567891231257"))
+    def test_validar_fecha(self):
+        self.assertTrue(sh.validar_fecha("10/23"))
+        self.assertFalse(sh.validar_fecha("5/23"))
+        self.assertFalse(sh.validar_fecha("15/23"))
+    def test_validar_codigo(self):
+        self.assertTrue(sh.validar_codigo("123"))
+        self.assertFalse(sh.validar_codigo("1234"))
+        self.assertFalse(sh.validar_codigo("124h"))
+        self.assertTrue(sh.validar_codigo("456"))
+    def test_validar_saldo(self):
+        self.assertTrue(sh.validar_saldo(5000))
+        self.assertFalse(sh.validar_saldo(500000))
+        self.assertTrue(sh.validar_saldo(1000))
     def tearDown(self) -> None:
         pass
 
-def suite():
-    suite=unittest.TestSuite()
-    suite.addTest(string_handlerTest('test_substract_str'))
-    suite.addTest(string_handlerTest('test_add_str'))
-    return suite
-
 if __name__=="__main__":
-    runner = unittest.TextTestRunner()
-    runner.run(suite())
+    unittest.main()
